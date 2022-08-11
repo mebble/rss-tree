@@ -21,12 +21,13 @@ export const feed = (digests: DailyDigest[]): string => {
     })
 
     digests.forEach(d => {
+        const url = `${process.env.GROWW_FEED_ITEM_BASE_URL}/${d.slug}`
         rss.item({
             title: d.title.rendered,
             description: d.digest_content.intro,
-            url: `${process.env.GROWW_FEED_ITEM_BASE_URL}/${d.slug}`,
+            url: url,
             date: d.date_gmt,
-            guid: d.slug,
+            guid: url,
         })
     })
 
