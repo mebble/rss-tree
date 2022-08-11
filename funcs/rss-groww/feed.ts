@@ -17,6 +17,7 @@ export const feed = (digests: DailyDigest[]): string => {
         title: 'Groww Digest - Daily',
         feed_url: `${process.env.GROWW_FEED_URL}`,
         site_url: `${process.env.GROWW_SITE_URL}`,
+        image_url: `${process.env.GROWW_IMG_URL}`,
     })
 
     digests.forEach(d => {
