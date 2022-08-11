@@ -1,0 +1,3 @@
+# https://docs.netlify.com/functions/optional-configuration/?fn-language=ts
+[functions]
+  directory = "funcs"
