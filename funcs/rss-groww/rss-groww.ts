@@ -16,20 +16,20 @@ export const handler: Handler = async (event, context) => {
     }
   }
 
-  if (!res.headers.get('content-type')?.includes('json')) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: `Server error`,
-      }),
-    }
-  }
-
   if (!res.ok) {
     return {
       statusCode: 400,
       body: JSON.stringify({
         message: `Bad request`,
+      }),
+    }
+  }
+
+  if (!res.headers.get('content-type')?.includes('json')) {
+    return {
+      statusCode: 404,
+      body: JSON.stringify({
+        message: `Daily digest not found`,
       }),
     }
   }
