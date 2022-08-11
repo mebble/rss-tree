@@ -15,11 +15,14 @@ export const feed = (digests: DailyDigest[]): string => {
         image_url: `${process.env.GROWW_IMG_URL}`,
     })
 
-    digests.forEach(d => {
+    digests.forEach((d, i) => {
+        const url = i === 0
+            ? process.env.GROWW_FEED_ITEM_BASE_URL as string
+            : `${process.env.GROWW_FEED_ITEM_BASE_URL}/${d.slug}`
         rss.item({
             title: d.title,
             description: d.introduction,
-            url: `${process.env.GROWW_FEED_ITEM_BASE_URL}/${d.slug}`,
+            url,
             date: d.date,
             guid: d.slug,
         })
