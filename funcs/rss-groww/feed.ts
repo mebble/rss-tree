@@ -23,7 +23,7 @@ export const feed = (digests: DailyDigest[]): string => {
         rss.item({
             title: d.title.rendered,
             description: d.digest_content.intro,
-            url: `${process.env.GROWW_DAILY_DIGEST_HOST}/${d.slug}`,
+            url: `${process.env.GROWW_FEED_ITEM_BASE_URL}/${d.slug}`,
             date: d.date_gmt,
             guid: d.slug,
         })
