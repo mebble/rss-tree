@@ -36,7 +36,7 @@ function buildResponse(statusCode: number, body: string): HandlerResponse {
   return {
     statusCode,
     headers: {
-      'Content-Type': 'application/atom+xml'
+      'Content-Type': 'application/rss+xml'
     },
     body,
   }
