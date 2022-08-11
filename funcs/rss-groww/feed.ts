@@ -1,15 +1,10 @@
 import RSS from 'rss'
 
 export type DailyDigest = {
-    title: {
-        rendered: string
-    },
-    date_gmt: string,
-    modified_gmt: string,
+    title: string,
     slug: string,
-    digest_content: {
-        intro: string,
-    }
+    date: string,
+    introduction: string,
 }
 
 export const feed = (digests: DailyDigest[]): string => {
@@ -22,10 +17,10 @@ export const feed = (digests: DailyDigest[]): string => {
 
     digests.forEach(d => {
         rss.item({
-            title: d.title.rendered,
-            description: d.digest_content.intro,
+            title: d.title,
+            description: d.introduction,
             url: `${process.env.GROWW_FEED_ITEM_BASE_URL}/${d.slug}`,
-            date: d.date_gmt,
+            date: d.date,
             guid: d.slug,
         })
     })
