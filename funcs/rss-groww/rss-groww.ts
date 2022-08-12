@@ -7,7 +7,7 @@ import { DailyDigest, feed } from './feed'
 export const handler: Handler = async (event, context) => {
   let res: Response
   try {
-    res = await fetch(`${process.env.GROWW_HOST}/api/v1/dailydigests?_limit=10&_start=0`)
+    res = await fetch(`${process.env.GROWW_HOST}/api/v1/dailydigests?_limit=5&_start=0`)
   } catch {
     return buildResponse(500, `Upstream error`)
   }
