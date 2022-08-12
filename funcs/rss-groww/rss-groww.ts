@@ -20,14 +20,14 @@ export const handler: Handler = async (event, context) => {
     return buildResponse(404, `Daily digest not found`)
   }
 
-  const data = await res.json()
-
-  let xml
+  let data: DailyDigest[]
   try {
-    xml = feed(data as DailyDigest[])
+    data = await res.json() as DailyDigest[]
   } catch {
     return buildResponse(500, `Server error`)
   }
+
+  const xml = feed(data)
 
   return buildResponse(200, xml)
 }
