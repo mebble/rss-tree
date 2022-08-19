@@ -12,6 +12,7 @@ type NewsItem = {
 }
 
 type DigestContent = {
+    introduction: string,
     is_indian_market_open: boolean,
     sensex: ChangeStat,
     nifty: ChangeStat,
@@ -24,12 +25,11 @@ export type DailyDigest = DigestContent & {
     title: string,
     slug: string,
     date: string,
-    introduction: string,
 }
 
 export const feed = (digests: DailyDigest[]): string => {
     const rss = new RSS({
-        title: 'Groww Digest - Daily',
+        title: `${process.env.GROWW_FEED_TITLE}`,
         feed_url: `${process.env.GROWW_FEED_URL}`,
         site_url: `${process.env.GROWW_SITE_URL}`,
         image_url: `${process.env.GROWW_IMG_URL}`,
@@ -52,7 +52,7 @@ export const feed = (digests: DailyDigest[]): string => {
 }
 
 function renderContentHtml(content: DigestContent): string {
-    let html = ''
+    let html = content.introduction;
 
     if (content.is_indian_market_open) {
         html += withH2('Sensex', renderChangeHtml(content.sensex))
