@@ -33,6 +33,13 @@ export const feed = (digests: DailyDigest[]): string => {
         feed_url: `${process.env.GROWW_FEED_URL}`,
         site_url: `${process.env.GROWW_SITE_URL}`,
         image_url: `${process.env.GROWW_IMG_URL}`,
+        custom_namespaces: {
+            'sy': 'http://purl.org/rss/1.0/modules/syndication/',
+        },
+        custom_elements: [
+            { 'sy:updatePeriod': 'hourly' },
+            { 'sy:updateFrequency': 1 },
+        ],
     })
 
     digests.forEach(d => {
