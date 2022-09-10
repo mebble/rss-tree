@@ -1,30 +1,26 @@
 import 'dotenv/config'
-import { Handler } from '@netlify/functions'
-import fetch from 'node-fetch'
+import type { Handler } from '@netlify/functions'
 import type { Response } from 'node-fetch'
+import fetch from 'node-fetch'
 
 import { DailyDigest, feed } from './feed'
 import {
-  headerKeyContentType, headerKeyLastModified, headerKeyModifiedSince,
-  successResponse, failureResponse, cachedResponse,
+  headerKeyContentType, lastModifiedHeader,
+  successResponse, failureResponse, cachedResponse, modifiedSinceHeader,
 } from '../../common/http';
 
 export const handler: Handler = async (event, context) => {
   let res: Response
   try {
     res = await fetch(`${process.env.GROWW_HOST}/api/v1/dailydigests?_limit=5&_start=0`, {
-      headers: {
-        [headerKeyModifiedSince]: event.headers[headerKeyModifiedSince] ?? ''
-      }
+      headers: modifiedSinceHeader(event)
     })
   } catch {
     return failureResponse(500, `Upstream error`)
   }
 
   if (res.status === 304) {
-    return cachedResponse(304, {
-      [headerKeyLastModified]: res.headers.get(headerKeyLastModified) ?? ''
-    });
+    return cachedResponse(304, lastModifiedHeader(res));
   }
 
   if (!res.ok) {
@@ -44,7 +40,5 @@ export const handler: Handler = async (event, context) => {
 
   const xml = feed(data)
 
-  return successResponse(200, xml, {
-    [headerKeyLastModified]: res.headers.get(headerKeyLastModified) ?? '',
-  })
+  return successResponse(200, xml, lastModifiedHeader(res))
 }
