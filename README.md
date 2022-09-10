@@ -28,6 +28,6 @@ netlify functions:serve
 Testing
 
 ```bash
-curl http://<host>/.netlify/functions/<func> -Is | grep -i 'last-modified'
-curl http://<host>/.netlify/functions/<func> -H 'If-Modified-Since: <last-modified>' -I
+curl 'http://<host>/.netlify/functions/<func>' -Is | grep -i 'last-modified'
+curl 'http://<host>/.netlify/functions/<func>' -H 'If-Modified-Since: <last-modified>' -I
 ```

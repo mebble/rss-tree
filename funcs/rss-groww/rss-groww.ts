@@ -1,12 +1,13 @@
 import 'dotenv/config'
-import { Handler, HandlerResponse } from '@netlify/functions'
+import { Handler } from '@netlify/functions'
 import fetch from 'node-fetch'
 import type { Response } from 'node-fetch'
-import { DailyDigest, feed } from './feed'
 
-const headerKeyModifiedSince = 'if-modified-since';
-const headerKeyLastModified = 'last-modified';
-const headerKeyContentType = 'content-type';
+import { DailyDigest, feed } from './feed'
+import {
+  headerKeyContentType, headerKeyLastModified, headerKeyModifiedSince,
+  successResponse, failureResponse, cachedResponse,
+} from '../../common/http';
 
 export const handler: Handler = async (event, context) => {
   let res: Response
@@ -46,32 +47,4 @@ export const handler: Handler = async (event, context) => {
   return successResponse(200, xml, {
     [headerKeyLastModified]: res.headers.get(headerKeyLastModified) ?? '',
   })
-}
-
-function failureResponse(statusCode: number, body: string): HandlerResponse {
-  return {
-    statusCode,
-    headers: {
-      [headerKeyContentType]: 'text/plain'
-    },
-    body,
-  }
-}
-
-function successResponse(statusCode: number, body: string, headers: Record<string, string>): HandlerResponse {
-  return {
-    statusCode,
-    headers: {
-      [headerKeyContentType]: 'application/rss+xml',
-      ...headers
-    },
-    body,
-  }
-}
-
-function cachedResponse(statusCode: number, headers: Record<string, string>): HandlerResponse {
-  return {
-    statusCode,
-    headers,
-  }
 }
