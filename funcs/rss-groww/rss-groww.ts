@@ -16,7 +16,7 @@ export const handler: Handler = async (event, context) => {
       headers: modifiedSinceHeader(event)
     })
   } catch {
-    return failureResponse(500, `Upstream error`)
+    return failureResponse(500, `rsstree upstream error`)
   }
 
   if (res.status === 304) {
@@ -24,7 +24,7 @@ export const handler: Handler = async (event, context) => {
   }
 
   if (!res.ok) {
-    return failureResponse(400, `Bad request`)
+    return failureResponse(400, `rsstree bad request`)
   }
 
   if (!res.headers.get(headerKeyContentType)?.includes('json')) {
@@ -35,7 +35,7 @@ export const handler: Handler = async (event, context) => {
   try {
     data = await res.json() as DailyDigest[]
   } catch {
-    return failureResponse(500, `Server error`)
+    return failureResponse(500, `rsstree server error`)
   }
 
   const xml = feed(data)
