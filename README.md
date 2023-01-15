@@ -10,6 +10,8 @@ Generate RSS Feeds from sources that don't have one.
 |------|------|---------|
 | Groww Digest - Daily | `/.netlify/functions/rss-groww` | [rsstree.netlify.app/.netlify/functions/rss-groww](https://rsstree.netlify.app/.netlify/functions/rss-groww) |
 
+![Demo of Groww Digest - Daily](./docs/demo.jpg)
+
 ## Project Scaffolding
 
 Steps:
