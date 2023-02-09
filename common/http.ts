@@ -29,7 +29,7 @@ export function failureResponse(statusCode: number, body: string): HandlerRespon
     }
 }
 
-export function successResponse(statusCode: number, body: string, headers: Record<string, string>): HandlerResponse {
+export function successResponse(statusCode: number, body: string, headers?: Record<string, string>): HandlerResponse {
     return {
         statusCode,
         headers: {

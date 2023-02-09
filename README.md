@@ -12,6 +12,11 @@ Generate RSS Feeds from sources that don't have one.
 
 ![Demo of Groww Digest - Daily](./docs/demo.jpg)
 
+## Development Requirements
+
+- node and npm
+- [netlify cli installed globally](https://docs.netlify.com/cli/get-started/)
+
 ## Project Scaffolding
 
 Steps:
@@ -24,12 +29,19 @@ netlify functions:create --name <func-name>
 ## Local Development
 
 ```
+npm install
+touch .env  # Put all environment variables here
 netlify functions:serve
 ```
 
 Testing
 
 ```bash
+# when caching with last-modified header
 curl 'http://<host>/.netlify/functions/<func>' -Is | grep -i 'last-modified'
 curl 'http://<host>/.netlify/functions/<func>' -H 'If-Modified-Since: <last-modified>' -I
+
+# when caching with etag header
+curl 'http://<host>/.netlify/functions/<func>' -Is | grep -i 'etag'
+curl 'http://<host>/.netlify/functions/<func>' -H 'If-None-Match: "<etag>"' -I
 ```
