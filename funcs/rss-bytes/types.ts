@@ -1,12 +1,8 @@
 export type Post = {
     slug: string,
     title: string,
+    description: string,
     date: string,
     featuredImage: string,
-}
-
-export type BytesData = {
-    buildId: string,
-    featuredPost: Post,
-    posts: Post[],
+    content: string,
 }

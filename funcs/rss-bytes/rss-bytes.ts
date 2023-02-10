@@ -6,9 +6,9 @@ import { feed } from './feed'
 import { successResponse } from '../../common/http'
 
 export const handler: Handler = async (event, context) => {
-    const res = await fetchPosts('https://bytes.dev/archives');
+    const posts = await fetchPosts('https://bytes.dev/archives');
 
-    const xml = feed(res)
+    const xml = feed(posts)
 
     return successResponse(200, xml)
 }
