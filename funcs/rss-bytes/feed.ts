@@ -1,4 +1,5 @@
 import RSS from 'rss'
+import { parse } from 'node-html-parser'
 
 import { Post } from './types'
 
@@ -18,10 +19,21 @@ export const feed = (posts: Post[]): string => {
             date: p.date,
             guid: p.slug,
             custom_elements: [{
-                'content:encoded': { _cdata: p.content }
+                'content:encoded': { _cdata: renderContent(p.content) }
             }]
         })
     })
 
     return rss.xml()
+}
+
+function renderContent(content: string) {
+    const root = parse(content)
+    const bytesImg = root.querySelector('img[alt="Bytes"]')
+    const articleBanner = root.querySelector('.bg-alt')
+    if (bytesImg && articleBanner) {
+        bytesImg.replaceWith(articleBanner.clone())
+        articleBanner.remove()
+    }
+    return root.toString()
 }
