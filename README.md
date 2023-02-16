@@ -8,7 +8,8 @@ Generate RSS Feeds from sources that don't have one.
 
 | Feed | Path | Link |
 |------|------|---------|
-| Groww Digest - Daily | `/.netlify/functions/rss-groww` | [rsstree.netlify.app/.netlify/functions/rss-groww](https://rsstree.netlify.app/.netlify/functions/rss-groww) |
+| Groww Digest - Daily                   | `/.netlify/functions/rss-groww` | [rsstree.netlify.app/.netlify/functions/rss-groww](https://rsstree.netlify.app/.netlify/functions/rss-groww) |
+| Bytes - The Best JavaScript Newsletter | `/.netlify/functions/rss-bytes` | [rsstree.netlify.app/.netlify/functions/rss-bytes](https://rsstree.netlify.app/.netlify/functions/rss-bytes) |
 
 ![Demo of Groww Digest - Daily](./docs/demo.jpg)
 
