@@ -29,10 +29,17 @@ async function fetchPost(buildId: string, post: Post): Promise<Post> {
         .then(res => res.json())
         .then((nextData: any) => {
             const { content, data: { description } } = nextData.pageProps.post
+            const root = parse(content)
+            const bytesImg = root.querySelector('img[alt="Bytes"]')
+            const articleBanner = root.querySelector('.bg-alt')
+            if (bytesImg && articleBanner) {
+                bytesImg.replaceWith(articleBanner.clone())
+                articleBanner.remove()
+            }
             return {
                 ...post,
                 description,
-                content,
+                content: root.toString(),
             }
         })
 }
