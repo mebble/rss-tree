@@ -30,9 +30,12 @@ export const feed = (posts: Post[]): string => {
 function renderContent(content: string) {
     const root = parse(content)
     const bytesImg = root.querySelector('img[alt="Bytes"]')
+    const headSeparator = root.querySelector('hr')
     const articleBanner = root.querySelector('.bg-alt')
-    if (bytesImg && articleBanner) {
-        bytesImg.replaceWith(articleBanner.clone())
+
+    if (bytesImg && headSeparator && articleBanner) {
+        bytesImg.parentNode.remove()
+        headSeparator.insertAdjacentHTML('beforebegin', articleBanner.outerHTML)
         articleBanner.remove()
     }
     return root.toString()
