@@ -6,6 +6,8 @@ import { blanked } from './util';
 export const headerKeyModifiedSince = 'if-modified-since';
 export const headerKeyLastModified = 'last-modified';
 export const headerKeyContentType = 'content-type';
+export const headerKeyIfNoneMatch = 'if-none-match';
+export const headerKeyETag = 'etag';
 
 export function lastModifiedHeader(res: Response) {
     return {

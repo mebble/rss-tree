@@ -4,13 +4,19 @@ import type { Post } from './types'
 
 import fetch from 'node-fetch'
 import { parse } from 'node-html-parser'
+import { headerKeyETag, headerKeyIfNoneMatch } from '../../common/http'
+import { blanked } from '../../common/util'
 
-export const fetchPosts = async (url): Promise<UpstreamResponse<Post[]>> => {
+export const fetchPosts = async (url: string, etag: string): Promise<UpstreamResponse<Post[]>> => {
     let res: Response
     try {
-        res = await fetch(url)
+        res = await fetch(url, { headers: { [headerKeyIfNoneMatch]: etag } })
     } catch {
         return { kind: 'exception' }
+    }
+
+    if (res.status === 304) {
+        return { kind: 'cached', statusCode: res.status }
     }
 
     if (!res.ok) {
@@ -33,7 +39,8 @@ export const fetchPosts = async (url): Promise<UpstreamResponse<Post[]>> => {
         const postsWithContent = await Promise.all(allPosts.map(p => fetchPost(buildId, p)))
         return {
             kind: 'success',
-            data: postsWithContent
+            data: postsWithContent,
+            cacheKey: blanked(res.headers.get(headerKeyETag))
         }
     } catch (error) {
         return { kind: 'exception' }
