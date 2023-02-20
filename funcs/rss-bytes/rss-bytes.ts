@@ -13,7 +13,7 @@ export const handler: Handler = async (event, context) => {
     switch (response.kind) {
         case 'success':
             const xml = feed(response.data)
-            return successResponse(200, xml, { [headerKeyETag]: response.cacheKey })
+            return successResponse(200, xml, { [headerKeyETag]: `"${response.cacheKey}"` })
         case 'cached':
         case 'error':
             return {
