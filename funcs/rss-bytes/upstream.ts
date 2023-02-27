@@ -10,12 +10,12 @@ import { blanked } from '../../common/util'
 
 const eTagSeparator = ':::'
 
-export const fetchPosts = async (url: string, etag: string): Promise<UpstreamResponse<Post[]>> => {
+export const fetchPosts = async (baseUrl: string, etag: string): Promise<UpstreamResponse<Post[]>> => {
     const [rootHash, postsHash] = splitETag(etag);
 
     let res: Response
     try {
-        res = await fetch(url, { headers: { [headerKeyIfNoneMatch]: hashToETag(rootHash) } })
+        res = await fetch(`${baseUrl}/archives`, { headers: { [headerKeyIfNoneMatch]: hashToETag(rootHash) } })
     } catch {
         return { kind: 'exception' }
     }
@@ -42,7 +42,7 @@ export const fetchPosts = async (url: string, etag: string): Promise<UpstreamRes
 
     let postsWithETags: [Post, string][];
     try {
-        postsWithETags = await Promise.all(allPosts.map(p => fetchPost(buildId, p)))
+        postsWithETags = await Promise.all(allPosts.map(p => fetchPost(baseUrl, buildId, p)))
     } catch (error) {
         return { kind: 'exception' }
     }
@@ -61,8 +61,8 @@ export const fetchPosts = async (url: string, etag: string): Promise<UpstreamRes
     }
 }
 
-function fetchPost(buildId: string, post: Post): Promise<[Post, string]> {
-    return fetch(`https://bytes.dev/_next/data/${buildId}/archives/${post.slug}.json?slug=${post.slug}`)
+function fetchPost(baseUrl: string, buildId: string, post: Post): Promise<[Post, string]> {
+    return fetch(`${baseUrl}/_next/data/${buildId}/archives/${post.slug}.json?slug=${post.slug}`)
         .then<[any, string]>(async res => [await res.json(), blanked(res.headers.get(headerKeyETag))])
         .then(([nextData, etag]) => {
             const { content, data: { description } } = nextData.pageProps.post

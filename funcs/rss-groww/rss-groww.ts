@@ -10,7 +10,7 @@ import {
 import { blanked } from '../../common/util';
 
 export const handler: Handler = async (event, _context) => {
-    const response = await fetchDigests(`${process.env.GROWW_HOST}/api/v1/dailydigests?_limit=5&_start=0`, blanked(event.headers[headerKeyModifiedSince]))
+    const response = await fetchDigests(blanked(process.env.GROWW_HOST), blanked(event.headers[headerKeyModifiedSince]))
 
     switch (response.kind) {
         case 'success':

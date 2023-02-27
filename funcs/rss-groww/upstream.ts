@@ -6,10 +6,10 @@ import fetch from 'node-fetch'
 import { headerKeyContentType, headerKeyLastModified, headerKeyModifiedSince } from '../../common/http';
 import { blanked } from '../../common/util';
 
-export const fetchDigests = async (url: string, lastModified: string): Promise<UpstreamResponse<DailyDigest[]>> => {
+export const fetchDigests = async (baseUrl: string, lastModified: string): Promise<UpstreamResponse<DailyDigest[]>> => {
     let res: Response
     try {
-        res = await fetch(url, {
+        res = await fetch(`${baseUrl}/api/v1/dailydigests?_limit=5&_start=0`, {
             headers: { [headerKeyModifiedSince]: lastModified }
         })
     } catch {

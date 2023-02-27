@@ -7,7 +7,7 @@ import { headerKeyETag, headerKeyIfNoneMatch, successResponse } from '../../comm
 import { blanked } from '../../common/util'
 
 export const handler: Handler = async (event, _context) => {
-    const response = await fetchPosts('https://bytes.dev/archives', blanked(event.headers[headerKeyIfNoneMatch]));
+    const response = await fetchPosts(blanked(process.env.BYTES_HOST), blanked(event.headers[headerKeyIfNoneMatch]));
 
     // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions
     switch (response.kind) {
