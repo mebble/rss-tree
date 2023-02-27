@@ -6,7 +6,7 @@ import { feed } from './feed'
 import { headerKeyETag, headerKeyIfNoneMatch, successResponse } from '../../common/http'
 import { blanked } from '../../common/util'
 
-export const handler: Handler = async (event, context) => {
+export const handler: Handler = async (event, _context) => {
     const response = await fetchPosts('https://bytes.dev/archives', blanked(event.headers[headerKeyIfNoneMatch]));
 
     // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions

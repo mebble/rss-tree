@@ -1,44 +1,31 @@
 import 'dotenv/config'
 import type { Handler } from '@netlify/functions'
-import type { Response } from 'node-fetch'
-import fetch from 'node-fetch'
 
-import { DailyDigest, feed } from './feed'
+import { fetchDigests } from './upstream'
+import { feed } from './feed'
 import {
-  headerKeyContentType, lastModifiedHeader,
-  successResponse, failureResponse, cachedResponse, modifiedSinceHeader,
+    headerKeyModifiedSince, headerKeyLastModified,
+    successResponse, failureResponse,
 } from '../../common/http';
+import { blanked } from '../../common/util';
 
-export const handler: Handler = async (event, context) => {
-  let res: Response
-  try {
-    res = await fetch(`${process.env.GROWW_HOST}/api/v1/dailydigests?_limit=5&_start=0`, {
-      headers: modifiedSinceHeader(event)
-    })
-  } catch {
-    return failureResponse(500, `rsstree upstream error`)
-  }
+export const handler: Handler = async (event, _context) => {
+    const response = await fetchDigests(`${process.env.GROWW_HOST}/api/v1/dailydigests?_limit=5&_start=0`, blanked(event.headers[headerKeyModifiedSince]))
 
-  if (res.status === 304) {
-    return cachedResponse(304, lastModifiedHeader(res));
-  }
-
-  if (!res.ok) {
-    return failureResponse(400, `rsstree bad request`)
-  }
-
-  if (!res.headers.get(headerKeyContentType)?.includes('json')) {
-    return failureResponse(404, `Daily digest not found`)
-  }
-
-  let data: DailyDigest[]
-  try {
-    data = await res.json() as DailyDigest[]
-  } catch {
-    return failureResponse(500, `rsstree server error`)
-  }
-
-  const xml = feed(data)
-
-  return successResponse(200, xml, lastModifiedHeader(res))
+    switch (response.kind) {
+        case 'success':
+            const xml = feed(response.data)
+            return successResponse(200, xml,  { [headerKeyLastModified]: response.cacheKey })
+        case 'cached':
+            return { statusCode: response.statusCode }
+        case 'error':
+            switch (response.statusCode) {
+                case 404:
+                    return failureResponse(404, `Daily digest not found`)
+                default:
+                    return failureResponse(400, `rsstree bad request`)
+            }
+        default:
+            return failureResponse(500, `rsstree server error`)
+    }
 }

@@ -1,31 +1,5 @@
+import type { ChangeStat, DailyDigest, DigestContent } from './types'
 import RSS from 'rss'
-
-type ChangeStat = {
-    value: number,
-    change_type: 'up' | 'down',
-    perc_change: number,
-}
-
-type NewsItem = {
-    title: string,
-    description: string,
-}
-
-type DigestContent = {
-    introduction: string,
-    is_indian_market_open: boolean,
-    sensex: ChangeStat,
-    nifty: ChangeStat,
-    top_gainers: string,
-    top_losers: string,
-    news: NewsItem[],
-}
-
-export type DailyDigest = DigestContent & {
-    title: string,
-    slug: string,
-    date: string,
-}
 
 export const feed = (digests: DailyDigest[]): string => {
     const rss = new RSS({
