@@ -1,6 +1,7 @@
 # RSS Tree
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/d2b11387-e2b1-4ead-a396-236a44348062/deploy-status)](https://app.netlify.com/sites/rsstree/deploys)
+[![UptimeRobot status page](https://img.shields.io/badge/uptime%20robot-service%20status-008080?labelColor=005080)](https://stats.uptimerobot.com/JRAN7tBD3G)
 
 Generate RSS Feeds from sources that don't have one.
 
