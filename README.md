@@ -12,7 +12,9 @@ Generate RSS Feeds from sources that don't have one.
 | Groww Digest - Daily                   | ![Groww service monitor](https://img.shields.io/uptimerobot/ratio/m792455816-2d70eea9e9a9a5393a98f04c?label=Groww) | `/.netlify/functions/rss-groww` | [rsstree.netlify.app/.netlify/functions/rss-groww](https://rsstree.netlify.app/.netlify/functions/rss-groww) |
 | Bytes - The Best JavaScript Newsletter | ![Bytes service monitor](https://img.shields.io/uptimerobot/ratio/m793759252-df1c9a7779695a96289fcadd?label=Bytes) | `/.netlify/functions/rss-bytes` | [rsstree.netlify.app/.netlify/functions/rss-bytes](https://rsstree.netlify.app/.netlify/functions/rss-bytes) |
 
-![Demo of Groww Digest - Daily](./docs/demo.jpg)
+| Demo images | |
+|-|-|
+| ![Demo of Groww Digest - Daily](./docs/demo-groww.jpg) | ![Demo of Bytes](./docs/demo-bytes.png) |
 
 ## Development Requirements
 
