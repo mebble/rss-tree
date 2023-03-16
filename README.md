@@ -5,6 +5,8 @@
 
 Generate RSS Feeds from sources that don't have one.
 
+❓ [What's an RSS Feed?](https://ncase.me/rss/)
+
 ## Feeds
 
 | Feed | Uptime | Path | Link |
