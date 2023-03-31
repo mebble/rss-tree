@@ -4,11 +4,16 @@ import type { Post } from './types'
 
 import fetch from 'node-fetch'
 import md5 from 'md5'
-import { parse } from 'node-html-parser'
 import { headerKeyETag, headerKeyIfNoneMatch } from '../../common/http'
 import { blanked } from '../../common/util'
+import { parseNextData } from '../../common/parse'
 
 const eTagSeparator = ':::'
+
+type NextProps = {
+    posts: Post[],
+    featuredPost: Post
+}
 
 export const fetchPosts = async (baseUrl: string, etag: string): Promise<UpstreamResponse<Post[]>> => {
     const [rootHash, postsHash] = splitETag(etag);
@@ -28,17 +33,14 @@ export const fetchPosts = async (baseUrl: string, etag: string): Promise<Upstrea
         return { kind: 'error', statusCode: res.status }
     }
 
-    const body = await res.text()
-    const root = parse(body)
-    const nextDom = root.querySelector('#__NEXT_DATA__')
-    if (!nextDom) {
+    const nextData = parseNextData<NextProps>(await res.text())
+    if (!nextData) {
         return { kind: 'exception' }
     }
 
-    const nextData = JSON.parse(nextDom.textContent)
     const { featuredPost, posts } = nextData.props.pageProps
     const buildId = nextData.buildId
-    const allPosts = [featuredPost, ...posts.slice(0, 5)] as Post[]
+    const allPosts = [featuredPost, ...posts.slice(0, 5)]
 
     let postsWithETags: [Post, string][];
     try {
