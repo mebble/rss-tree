@@ -36,7 +36,7 @@ netlify functions:create --name <func-name>
 
 ```
 npm install
-touch .env  # Put all environment variables here
+cp .env.sample .env  # Put all environment variables here
 netlify functions:serve
 ```
 
