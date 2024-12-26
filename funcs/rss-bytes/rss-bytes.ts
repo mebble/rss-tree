@@ -6,6 +6,7 @@ import { fetchPosts } from './upstream'
 import { feed } from './feed'
 import { headerKeyETag, headerKeyIfNoneMatch, successResponse } from '../../common/http'
 import { blanked } from '../../common/util'
+import { Config } from './types'
 import { pino } from 'pino'
 
 const logger = pino({
@@ -17,12 +18,12 @@ export const handler: Handler = async (event, _context) => {
     const config = getConfig(process.env)
     logger.debug({ config }, "using config")
 
-    const response = await fetchPosts(blanked(process.env.BYTES_HOST), blanked(event.headers[headerKeyIfNoneMatch]));
+    const response = await fetchPosts(blanked(config.BYTES_HOST), blanked(event.headers[headerKeyIfNoneMatch]));
 
     // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions
     return match(response)
         .with({ kind: 'success' }, res => {
-            const xml = feed(res.data)
+            const xml = feed(config, res.data)
             return successResponse(200, xml, { [headerKeyETag]: `"${res.cacheKey}"` })
         })
         .with({ kind: 'cached' }, { kind: 'error' }, res => {
@@ -33,7 +34,7 @@ export const handler: Handler = async (event, _context) => {
         })
 }
 
-function getConfig(env: any) {
+function getConfig(env: any): Config {
     const {
         BYTES_FEED_TITLE,
         BYTES_FEED_URL,

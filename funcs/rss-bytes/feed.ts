@@ -1,21 +1,21 @@
 import RSS from 'rss'
 import { parse } from 'node-html-parser'
 
-import { Post } from './types'
+import { Config, Post } from './types'
 
-export const feed = (posts: Post[]): string => {
+export const feed = (config: Config, posts: Post[]): string => {
     const rss = new RSS({
-        title: `${process.env.BYTES_FEED_TITLE}`,
-        feed_url: `${process.env.BYTES_FEED_URL}`,
-        site_url: `${process.env.BYTES_SITE_URL}`,
-        image_url: `${process.env.BYTES_IMG_URL}`,
+        title: `${config.BYTES_FEED_TITLE}`,
+        feed_url: `${config.BYTES_FEED_URL}`,
+        site_url: `${config.BYTES_SITE_URL}`,
+        image_url: `${config.BYTES_IMG_URL}`,
     })
 
     posts.forEach(p => {
         rss.item({
             title: p.title,
             description: p.description,
-            url: `${process.env.BYTES_FEED_ITEM_BASE_URL}/${p.slug}`,
+            url: `${config.BYTES_FEED_ITEM_BASE_URL}/${p.slug}`,
             date: p.date,
             guid: p.slug,
             custom_elements: [{

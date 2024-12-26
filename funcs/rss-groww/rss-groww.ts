@@ -10,6 +10,7 @@ import {
 import { blanked } from '../../common/util';
 import { match } from 'ts-pattern';
 import { pino } from 'pino'
+import { Config } from './types'
 
 const logger = pino({
     level: process.env.LOG_LEVEL || "info",
@@ -20,11 +21,11 @@ export const handler: Handler = async (event, _context) => {
     const config = getConfig(process.env)
     logger.debug({ config }, "using config")
 
-    const response = await fetchDigests(blanked(process.env.GROWW_HOST), blanked(event.headers[headerKeyModifiedSince]))
+    const response = await fetchDigests(blanked(config.GROWW_HOST), blanked(event.headers[headerKeyModifiedSince]))
 
     return match(response)
         .with({ kind: 'success' }, res => {
-            const xml = feed(res.data)
+            const xml = feed(config, res.data)
             return successResponse(200, xml,  { [headerKeyLastModified]: res.cacheKey })
         })
         .with({ kind: 'cached' }, res => {
@@ -35,7 +36,7 @@ export const handler: Handler = async (event, _context) => {
         .otherwise(_res => failureResponse(500, `rsstree server error`))
 }
 
-function getConfig(env: any) {
+function getConfig(env: any): Config {
     const {
         GROWW_HOST,
         GROWW_FEED_TITLE,

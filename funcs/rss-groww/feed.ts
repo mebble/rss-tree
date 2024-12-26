@@ -1,19 +1,19 @@
-import type { ChangeStat, DailyDigest, DigestContent } from './types'
+import type { Config, ChangeStat, DailyDigest, DigestContent } from './types'
 import RSS from 'rss'
 
-export const feed = (digests: DailyDigest[]): string => {
+export const feed = (config: Config, digests: DailyDigest[]): string => {
     const rss = new RSS({
-        title: `${process.env.GROWW_FEED_TITLE}`,
-        feed_url: `${process.env.GROWW_FEED_URL}`,
-        site_url: `${process.env.GROWW_SITE_URL}`,
-        image_url: `${process.env.GROWW_IMG_URL}`,
+        title: `${config.GROWW_FEED_TITLE}`,
+        feed_url: `${config.GROWW_FEED_URL}`,
+        site_url: `${config.GROWW_SITE_URL}`,
+        image_url: `${config.GROWW_IMG_URL}`,
     })
 
     digests.forEach(d => {
         rss.item({
             title: d.title,
             description: d.introduction,
-            url: `${process.env.GROWW_FEED_ITEM_BASE_URL}/${d.slug}`,
+            url: `${config.GROWW_FEED_ITEM_BASE_URL}/${d.slug}`,
             date: d.date,
             guid: d.slug,
             custom_elements: [{

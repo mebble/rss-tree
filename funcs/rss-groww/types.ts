@@ -24,3 +24,12 @@ export type DailyDigest = DigestContent & {
     slug: string,
     date: string,
 }
+
+export type Config = {
+    GROWW_HOST: string,
+    GROWW_FEED_TITLE: string,
+    GROWW_FEED_ITEM_BASE_URL: string,
+    GROWW_FEED_URL: string,
+    GROWW_SITE_URL: string,
+    GROWW_IMG_URL: string,
+}
