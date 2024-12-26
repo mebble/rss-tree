@@ -18,7 +18,7 @@ const logger = pino({
 
 export const handler: Handler = async (event, _context) => {
     const config = getConfig(process.env)
-    logger.debug(config, "using config")
+    logger.debug({ config }, "using config")
 
     const response = await fetchDigests(blanked(process.env.GROWW_HOST), blanked(event.headers[headerKeyModifiedSince]))
 

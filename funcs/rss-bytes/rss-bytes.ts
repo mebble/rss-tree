@@ -15,7 +15,7 @@ const logger = pino({
 
 export const handler: Handler = async (event, _context) => {
     const config = getConfig(process.env)
-    logger.debug(config, "using config")
+    logger.debug({ config }, "using config")
 
     const response = await fetchPosts(blanked(process.env.BYTES_HOST), blanked(event.headers[headerKeyIfNoneMatch]));
 
