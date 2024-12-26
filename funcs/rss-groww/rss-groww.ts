@@ -12,7 +12,7 @@ import { match } from 'ts-pattern';
 import { pino } from 'pino'
 
 const logger = pino({
-    level: process.env.LOG_LEVEL,
+    level: process.env.LOG_LEVEL || "info",
     base: { func: "rss-groww" },
 })
 
