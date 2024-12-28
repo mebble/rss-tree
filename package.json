@@ -4,7 +4,8 @@
   "description": "netlify functions:create - hello world in typescript",
   "main": "hello-world.ts",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "test:debugger": "vitest --inspect-brk --no-file-parallelism"
   },
   "keywords": [
     "netlify",

@@ -40,7 +40,15 @@ cp .env.sample .env  # Put all environment variables here
 netlify functions:serve
 ```
 
-Testing
+### Testing
+
+Automated tests:
+
+```
+npm run test
+```
+
+Manual tests:
 
 ```bash
 # when caching with last-modified header
@@ -50,4 +58,20 @@ curl 'http://<host>/.netlify/functions/<func>' -H 'If-Modified-Since: <last-modi
 # when caching with etag header
 curl 'http://<host>/.netlify/functions/<func>' -Is | grep -i 'etag'
 curl 'http://<host>/.netlify/functions/<func>' -H 'If-None-Match: "<etag>"' -I
+```
+
+### Debugger
+
+Put a `debugger` statement whereever you want it. Then:
+
+Run the debugger with tests:
+
+```
+npm run test:debugger
+```
+
+Run the debugger when running functions locally:
+
+```
+NODE_OPTIONS="--inspect" netlify functions:serve
 ```
