@@ -33,11 +33,14 @@ describe("RSS Feed Generator", () => {
     }]
 
     describe("feed", () => {
-        it("should return XML string", () => {
+        it("should add correct RSS items", () => {
             const result = feed(config, posts)
             expect(result).toContain("<link>https://test.com/posts/test-post</link>")
             expect(result).toContain('<guid isPermaLink="false">test-post</guid>')
+        })
 
+        it("should return correct HTML content", () => {
+            const result = feed(config, posts)
             const expectedHtml = `
                 <content:encoded>
                     <![CDATA[<html>
