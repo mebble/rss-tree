@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { feed } from "./feed"
 import { Config, Post } from "./types"
+import { assertHtmlContent } from '../../test/helpers'
 
 describe("RSS Feed Generator", () => {
     const config: Config = {
@@ -33,7 +34,7 @@ describe("RSS Feed Generator", () => {
     }]
 
     describe("feed", () => {
-        it("should add correct RSS items", () => {
+        it("should add correct values to RSS item fields", () => {
             const result = feed(config, posts)
             expect(result).toContain("<link>https://test.com/posts/test-post</link>")
             expect(result).toContain('<guid isPermaLink="false">test-post</guid>')
@@ -57,10 +58,3 @@ describe("RSS Feed Generator", () => {
         })
     })
 })
-
-function assertHtmlContent(expectedHtml: string, rssFeedXml: string) {
-    const normalizedFeed = rssFeedXml.replace(/\s+/g, '')
-    const normalizedExpected = expectedHtml.replace(/\s+/g, '')
-    expect(normalizedFeed).toContain(normalizedExpected)
-}
-
